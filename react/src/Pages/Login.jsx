@@ -1,8 +1,10 @@
 import React from "react";
 import { Button, Checkbox, Form, Grid, Input, theme, Typography } from "antd";
+import { useDispatch } from "react-redux";
 
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { loginActionApi } from "../Redux/Reducers/userReducer";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -11,9 +13,18 @@ const { Text, Title, Link } = Typography;
 const Login = () => {
   const { token } = useToken();
   const screens = useBreakpoint();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const onFinish = async (values) => {
+    try {
+      console.log("Received values of form: ", values);
+      const loginActionThunk = loginActionApi(values.email, values.password);
+      await dispatch(loginActionThunk);
+      navigate("/profile");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const styles = {

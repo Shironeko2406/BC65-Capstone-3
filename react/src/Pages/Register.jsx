@@ -1,8 +1,24 @@
 import React from "react";
-import { Button, Form, Grid, Input, Select, theme, Typography } from "antd";
-
-import { LockOutlined, MailOutlined, UserOutlined, IdcardOutlined, PhoneOutlined } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
+import {
+  Button,
+  Form,
+  Grid,
+  Input,
+  Select,
+  theme,
+  Typography,
+  message,
+} from "antd";
+import {
+  LockOutlined,
+  MailOutlined,
+  UserOutlined,
+  IdcardOutlined,
+  PhoneOutlined,
+} from "@ant-design/icons";
+import { NavLink, useNavigate } from "react-router-dom";
+import { signupActionApi } from "../Redux/Reducers/userReducer";
+import { useDispatch } from "react-redux";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -11,9 +27,22 @@ const { Text, Title, Link } = Typography;
 const Register = () => {
   const { token } = useToken();
   const screens = useBreakpoint();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const onFinish = async (values) => {
+    try {
+      console.log("Received values of form: ", values);
+      const signupActionThunk = signupActionApi(values);
+      await dispatch(signupActionThunk);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    message.warning("Vui lòng kiểm tra lại thông tin đăng kí.");
   };
 
   const styles = {
@@ -79,20 +108,10 @@ const Register = () => {
         <Form
           name="normal_signup"
           onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
           layout="vertical"
           requiredMark="optional"
         >
-          <Form.Item
-            name="id"
-            rules={[
-              {
-                required: true,
-                message: "Please input your ID!",
-              },
-            ]}
-          >
-            <Input prefix={<IdcardOutlined />} placeholder="ID" />
-          </Form.Item>
           <Form.Item
             name="email"
             rules={[
@@ -107,12 +126,13 @@ const Register = () => {
           </Form.Item>
           <Form.Item
             name="password"
-            extra="Password needs to be at least 8 characters."
+            extra="Mật khẩu tối đa 8 kí tự."
             rules={[
               {
                 required: true,
                 message: "Please input your Password!",
               },
+              { max: 8, message: "Mật khẩu quá dài!" },
             ]}
           >
             <Input.Password
@@ -142,16 +162,17 @@ const Register = () => {
             ]}
           >
             <Select placeholder="Gender">
-              <Select.Option value="male">Male</Select.Option>
-              <Select.Option value="female">Female</Select.Option>
+              <Select.Option value="true">Male</Select.Option>
+              <Select.Option value="false">Female</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
             name="phone"
             rules={[
+              { required: true, message: "Please input your phone number!" },
               {
-                required: true,
-                message: "Please input your Phone Number!",
+                pattern: /^\d+$/,
+                message: "Please input a valid phone number!",
               },
             ]}
           >
