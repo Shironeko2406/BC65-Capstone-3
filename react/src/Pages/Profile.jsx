@@ -16,7 +16,6 @@ import {
   getDataJSONStorage,
   getDataTextStorage,
 } from "../Util/UtilFunction";
-import axios from "axios";
 
 const Profile = () => {
   const { Text } = Typography;
