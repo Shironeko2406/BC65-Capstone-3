@@ -8,7 +8,6 @@ import {
   setDataJSONStorage,
   setDataTextStorage,
 } from "../../Util/UtilFunction";
-import axios from "axios";
 const initialState = {
   userLogin: getDataJSONStorage(USER_LOGIN),
   userInfo: {
@@ -20,8 +19,8 @@ const initialState = {
   },
 };
 
-const userReducer = createSlice({
-  name: "userReducer",
+const UsersReducer = createSlice({
+  name: "UsersReducer",
   initialState,
   reducers: {
     loginAction: (state, action) => {
@@ -33,9 +32,9 @@ const userReducer = createSlice({
   },
 });
 
-export const { loginAction, signupAction } = userReducer.actions;
+export const { loginAction, signupAction } = UsersReducer.actions;
 
-export default userReducer.reducer;
+export default UsersReducer.reducer;
 
 // Action Thunk
 

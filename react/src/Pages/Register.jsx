@@ -17,8 +17,8 @@ import {
   PhoneOutlined,
 } from "@ant-design/icons";
 import { NavLink, useNavigate } from "react-router-dom";
-import { signupActionApi } from "../Redux/Reducers/userReducer";
 import { useDispatch } from "react-redux";
+import { signupActionApi } from "../Redux/Reducers/UsersReducer";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;

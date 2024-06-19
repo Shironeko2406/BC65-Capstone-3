@@ -7,9 +7,9 @@ import Register from "./Pages/Register";
 import { store } from "./Redux/Store";
 
 import TemplateUI from "./Component/FormLayoutTemplate/TemplateUI";
-import ShowAddProduct from "./Pages/ShowAddProduct";
 
 import Profile from "./Pages/Profile";
+import ShowAllProduct from "./Pages/ShowAllProduct";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="register" element={<Register></Register>}></Route>
 
         <Route path="" element={<TemplateUI></TemplateUI>}>
-          <Route path="" element={<ShowAddProduct></ShowAddProduct>}></Route>
+          <Route path="" element={<ShowAllProduct></ShowAllProduct>}></Route>
         </Route>
 
         <Route path="profile" element={<Profile></Profile>}></Route>
