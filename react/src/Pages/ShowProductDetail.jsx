@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { GetProductByIdActionAsync } from "../Redux/Reducers/ProductReducer";
+import { addToCart } from "../Redux/Reducers/CartReducer";
 
 const ShowProductDetail = () => {
+  const [quantity, setQuantity] =useState(1)
   const params = useParams();
   const dispatch = useDispatch();
   const { id } = params;
@@ -18,7 +20,13 @@ const ShowProductDetail = () => {
   useEffect(() => {
     getDetailProductById();
     window.scrollTo(0, 0);
+    setQuantity(1);
   }, [id]);
+
+  const handleAddToCart = () => {
+    const action = addToCart({ ...detailProductById,quantity: parseInt(quantity) })
+    dispatch(action)
+  };
 
   return (
     <div className="container mt-5">
@@ -46,9 +54,11 @@ const ShowProductDetail = () => {
             <input
               type="number"
               className="form-control w-25 me-2"
-              defaultValue="1"
+              value={quantity}
+              onChange={(e)=>{setQuantity(e.target.value)}}
+              min={1}
             />
-            <button className="btn btn-primary">Add to cart</button>
+            <button className="btn btn-primary" onClick={handleAddToCart}>Add to cart</button>
           </div>
         </div>
       </div>
