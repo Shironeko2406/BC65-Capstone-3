@@ -4,6 +4,7 @@ import {
   TOKEN_AUTHOR,
   USER_LOGIN,
   getDataJSONStorage,
+  getDataTextStorage,
   setCookie,
   setDataJSONStorage,
   setDataTextStorage,
@@ -74,6 +75,27 @@ export const signupActionApi = (signupInfo) => {
       dispatch(signup);
     } catch (error) {
       message.error("Đăng kí thất bại:" + error.message);
+    }
+  };
+};
+
+//----------------- Cập nhập profile-------------------
+export const updateProfileActionApi = (updateData) => {
+  return async (dispatch) => {
+    try {
+      const token = getDataTextStorage(TOKEN_AUTHOR);
+      const res = await axios.post(
+        "https://apistore.cybersoft.edu.vn/api/Users/updateProfile",
+        updateData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      message.success("Cập nhập thành công!");
+    } catch (error) {
+      message.error("Cập nhập thất bại:" + error.message);
     }
   };
 };
