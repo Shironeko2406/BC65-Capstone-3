@@ -10,7 +10,8 @@ import TemplateUI from "./Component/FormLayoutTemplate/TemplateUI";
 
 import Profile from "./Pages/Profile";
 import ShowAllProduct from "./Pages/ShowAllProduct";
-
+import ShowProductDetail from "./Pages/ShowProductDetail";
+import CartIcon from "./Pages/CartIcon";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -21,10 +22,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
         <Route path="" element={<TemplateUI></TemplateUI>}>
           <Route path="" element={<ShowAllProduct></ShowAllProduct>}></Route>
+          <Route path="product-detail/:id" element={<ShowProductDetail />} />
         </Route>
-
         <Route path="profile" element={<Profile></Profile>}></Route>
-
+        <Route path="cart" element={<CartIcon></CartIcon>}></Route>
       </Routes>
     </Provider>
   </BrowserRouter>
