@@ -10,6 +10,8 @@ import TemplateUI from "./Component/FormLayoutTemplate/TemplateUI";
 
 import Profile from "./Pages/Profile";
 import ShowAllProduct from "./Pages/ShowAllProduct";
+import ShowProductDetail from "./Pages/ShowProductDetail";
+import CartIcon from "./Pages/CartIcon";
 import CheckLogin from "./Pages/CheckLogin";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -21,10 +23,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
         <Route path="" element={<TemplateUI></TemplateUI>}>
           <Route path="" element={<ShowAllProduct></ShowAllProduct>}></Route>
+          <Route path="product-detail/:id" element={<ShowProductDetail />} />
         </Route>
-
         <Route path="profile" element={<Profile></Profile>}></Route>
-
+        <Route path="cart" element={<CartIcon></CartIcon>}></Route>
         <Route path="checklogin" element={<CheckLogin></CheckLogin>}></Route>
       </Routes>
     </Provider>
