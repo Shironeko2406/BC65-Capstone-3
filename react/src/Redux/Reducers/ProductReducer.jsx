@@ -1,33 +1,54 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  productList: {
-    id: 1,
-    name: "vans black",
-    alias: "vans-black-black",
-    price: 200,
-    description:
-      "about this shoe:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ",
-    size: "[32,33,34,35]",
-    sizes: ["32", "33", "34", "35"],
-    shortDescription:
-      "about this shoe:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    quantity: 100,
-    deleted: false,
-    categories: '[{"id": "VANS_CONVERSE","category":"VANS_CONVERSE"}]',
-    relatedProducts: "[2,3,1]",
-    feature: true,
-    image: "https://apistore.cybersoft.edu.vn/images/vans-black-black.png",
-    imgLink: "https://apistore.cybersoft.edu.vn/images/vans-black-black.png",
-  },
+  productList: [],
+  detailProductById: null,
 };
 
 const ProductReducer = createSlice({
   name: "ProductReducer",
   initialState,
-  reducers: {},
+  reducers: {
+    setProductList: (state, action) => {
+      state.productList = action.payload;
+    },
+    setDetailProductById: (state, action) => {
+      state.detailProductById = action.payload;
+    },
+  },
 });
 
-export const {} = ProductReducer.actions;
+export const { setProductList, setDetailProductById } = ProductReducer.actions;
 
 export default ProductReducer.reducer;
+
+//---------API Call----------------
+export const GetProductListActionAsync = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get(
+        "https://apistore.cybersoft.edu.vn/api/Product"
+      );
+      console.log(res.data.content);
+      const action = setProductList(res.data.content);
+      dispatch(action);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const GetProductByIdActionAsync = (id) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get(
+        `https://apistore.cybersoft.edu.vn/api/Product/getbyid?id=${id}`
+      );
+      console.log(res.data.content);
+      const action = setDetailProductById(res.data.content);
+      dispatch(action);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
