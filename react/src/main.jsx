@@ -10,6 +10,7 @@ import Profile from "./Pages/Profile";
 import ShowAllProduct from "./Pages/ShowAllProduct";
 import ShowProductDetail from "./Pages/ShowProductDetail";
 import CartPage from "./Pages/CartPage";
+import CheckLogin from "./Pages/CheckLogin";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="product-detail/:id" element={<ShowProductDetail />} />
         </Route>
         <Route path="profile" element={<Profile></Profile>}></Route>
+        <Route path="checklogin" element={<CheckLogin></CheckLogin>}></Route>
       </Routes>
     </Provider>
   </BrowserRouter>
