@@ -10,7 +10,7 @@ import TemplateUI from "./Component/FormLayoutTemplate/TemplateUI";
 
 import Profile from "./Pages/Profile";
 import ShowAllProduct from "./Pages/ShowAllProduct";
-
+import CheckLogin from "./Pages/CheckLogin";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -25,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
         <Route path="profile" element={<Profile></Profile>}></Route>
 
+        <Route path="checklogin" element={<CheckLogin></CheckLogin>}></Route>
       </Routes>
     </Provider>
   </BrowserRouter>
