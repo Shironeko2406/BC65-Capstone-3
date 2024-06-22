@@ -57,23 +57,6 @@ const Profile = () => {
     }
   };
 
-  // const updateProfileApi = async () => {
-  //   try {
-  //     const res = await axios.post(
-  //       "https://apistore.cybersoft.edu.vn/api/Users/updateProfile",
-  //       {},
-  //       {
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       }
-  //     );
-  //     message.success("Cập nhập thành công!");
-  //   } catch (error) {
-  //     console.error(error);
-  //     message.error("Cập nhập thất bại:" + error.message);
-  //   }
-  // }
   const renderProfile = () => {
     if (userLogin) {
       return (
