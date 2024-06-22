@@ -12,6 +12,7 @@ import ShowProductDetail from "./Pages/ShowProductDetail";
 import CartPage from "./Pages/CartPage";
 import CheckLogin from "./Pages/CheckLogin";
 import ModalConfirmOrder from "./Modal/ModalConfirmOrder";
+import OrderHistory from "./Pages/OrderHistory";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="" element={<TemplateUI></TemplateUI>}>
           <Route path="" element={<ShowAllProduct></ShowAllProduct>}></Route>
           <Route path="cart" element={<CartPage></CartPage>}></Route>
+          <Route path="order-history" element={<OrderHistory></OrderHistory>}></Route>
           <Route path="product-detail/:id" element={<ShowProductDetail />} />
         </Route>
         <Route path="profile" element={<Profile></Profile>}></Route>
