@@ -11,6 +11,7 @@ import ShowAllProduct from "./Pages/ShowAllProduct";
 import ShowProductDetail from "./Pages/ShowProductDetail";
 import CartPage from "./Pages/CartPage";
 import CheckLogin from "./Pages/CheckLogin";
+import ModalConfirmOrder from "./Modal/ModalConfirmOrder";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
