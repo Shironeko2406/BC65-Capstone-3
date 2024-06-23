@@ -1,8 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../Style/PageProduct.css";
 import { useDispatch, useSelector } from "react-redux";
-import { GetProductListActionAsync } from "../Redux/Reducers/ProductReducer";
+import {
+  GetProductListActionAsync,
+  LikeProductActionAsync,
+} from "../Redux/Reducers/ProductReducer";
 import { NavLink, useOutletContext } from "react-router-dom";
+import { HeartFilled, HeartOutlined, LikeFilled } from "@ant-design/icons";
 
 const ShowAllProduct = () => {
   const { productList } = useSelector((state) => state.ProductReducer);
@@ -29,6 +33,14 @@ const ShowAllProduct = () => {
       }
     });
 
+  const handleLike = (id) => {
+    return () => {
+      console.log(id);
+      const action = LikeProductActionAsync(id);
+      dispatch(action);
+    };
+  };
+
   return (
     <div className="container mt-5">
       <div className="row row-cols-1 row-cols-md-3 g-4">
@@ -45,7 +57,9 @@ const ShowAllProduct = () => {
                 <p className="card-text">{product.shortDescription}</p>
               </div>
               <div className="favorite">
-                <img src="path_to_heart_filled_image" alt="favorite" />
+                <button onClick={handleLike(product.id)}>
+                  <HeartFilled style={{ fontSize: "24px" }} />
+                </button>
               </div>
               <div className="card-footer">
                 <NavLink
