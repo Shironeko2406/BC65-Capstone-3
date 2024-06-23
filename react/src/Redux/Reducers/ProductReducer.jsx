@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { TOKEN_AUTHOR, getDataTextStorage } from "../../Util/UtilFunction";
+import { GetProductFavoriteActionAsync } from "./ProfileReducer";
 
 const initialState = {
   productList: [],
@@ -46,6 +48,50 @@ export const GetProductByIdActionAsync = (id) => {
       );
       console.log(res.data.content);
       const action = setDetailProductById(res.data.content);
+      dispatch(action);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const LikeProductActionAsync = (id) => {
+  return async (dispatch) => {
+    try {
+      const token = getDataTextStorage(TOKEN_AUTHOR);
+      const res = await axios.get(
+        `https://apistore.cybersoft.edu.vn/api/Users/like?productId=${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            accept: "application/json",
+          },
+        }
+      );
+      console.log(res.data.content);
+      const action = GetProductFavoriteActionAsync();
+      dispatch(action);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const UnLikeProductActionAsync = (id) => {
+  return async (dispatch) => {
+    try {
+      const token = getDataTextStorage(TOKEN_AUTHOR);
+      const res = await axios.get(
+        `https://apistore.cybersoft.edu.vn/api/Users/unlike?productId=${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            accept: "application/json",
+          },
+        }
+      );
+      console.log(res.data.content);
+      const action = GetProductFavoriteActionAsync();
       dispatch(action);
     } catch (error) {
       console.error(error);
