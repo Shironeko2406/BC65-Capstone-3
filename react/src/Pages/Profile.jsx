@@ -214,7 +214,6 @@
 
 // export default Profile;
 
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
@@ -381,7 +380,6 @@ const Profile = () => {
           </form>
         </div>
       </div>
-
 
       <div className="mt-4">
         <ul className="nav nav-tabs">
