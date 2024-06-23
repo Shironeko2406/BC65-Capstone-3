@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateOrderActionAsync } from "../Redux/Reducers/OderReducer";
+import { message } from "antd";
 
 const ModalConfirmOrder = () => {
   const { cart } = useSelector((state) => state.CartReducer);
@@ -97,6 +98,7 @@ const ModalConfirmOrder = () => {
       console.log(orderData);
       const action = CreateOrderActionAsync(orderData);
       dispatch(action);
+      message.success("Đơn hàng đã được đặt!");
     },
   });
 
