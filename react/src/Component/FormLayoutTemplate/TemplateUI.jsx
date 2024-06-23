@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Breadcrumb,
   Layout,
@@ -8,9 +8,15 @@ import {
   Badge,
   theme,
   Avatar,
+  Dropdown,
+  Space,
 } from "antd";
-import { NavLink, Outlet } from "react-router-dom";
-import { ShoppingCartOutlined } from "@ant-design/icons"; // Import icon giỏ hàng
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import {
+  ShoppingCartOutlined,
+  DownOutlined,
+  UserOutlined,
+} from "@ant-design/icons"; // Import icon giỏ hàng
 import "../../Style/TempUI.css"; // Thêm một file CSS để tùy chỉnh
 import { useSelector, useDispatch } from "react-redux"; // Import useSelector hook
 import { getDataJSONStorage } from "../../Util/UtilFunction";
@@ -26,13 +32,18 @@ const items1 = ["Home", "About", "Contact"].map((key) => ({
 
 const TemplateUI = () => {
   const { cart } = useSelector((state) => state.CartReducer);
+  const { userLogin } = useSelector((state) => state.UsersReducer);
   const totalItem = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const navigate = useNavigate();
 
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   const dispatch = useDispatch();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterOrder, setFilterOrder] = useState("");
 
   useEffect(() => {
     // Khôi phục dữ liệu từ localStorage khi component mount
@@ -42,6 +53,25 @@ const TemplateUI = () => {
       dispatch(action);
     }
   }, []);
+
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+  };
+
+  const handleMenuClick = (e) => {
+    setFilterOrder(e.key);
+  };
+
+  const handleUserClick = () => {
+    navigate("/profile");
+  };
+
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="up">Giá thấp tới cao</Menu.Item>
+      <Menu.Item key="down">Giá cao tới thấp</Menu.Item>
+    </Menu>
+  );
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Header
@@ -98,13 +128,32 @@ const TemplateUI = () => {
           <div className="header-right d-flex align-items-center">
             <Search
               placeholder="Search..."
-              onSearch={(value) => console.log(value)}
+              onSearch={handleSearch}
               style={{ width: 200, marginRight: "1rem" }} // Điều chỉnh khoảng cách bằng giá trị rem
             />
-            <Button type="primary" className="me-2">
-              Login
-            </Button>{" "}
-            {/* Sử dụng margin-end để tạo khoảng cách */}
+            <Dropdown overlay={menu} className="me-2">
+              <Button>
+                <Space>
+                  Tìm kiếm theo giá
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
+            {userLogin ? (
+              <Avatar
+                style={{ backgroundColor: "#003366", marginLeft: "1rem" }}
+                icon={<UserOutlined />}
+                onClick={handleUserClick}
+              />
+            ) : (
+              <Button
+                type="primary"
+                className="me-2"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </Button>
+            )}
             <NavLink to="/cart" className="ms-2">
               {" "}
               {/* Sử dụng margin-start để tạo khoảng cách */}
@@ -151,7 +200,7 @@ const TemplateUI = () => {
               minHeight: 280,
             }}
           >
-            <Outlet />
+            <Outlet context={{ searchTerm, filterOrder }} />
           </Content>
         </div>
       </Content>
