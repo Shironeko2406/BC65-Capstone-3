@@ -26,9 +26,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="" element={<ShowAllProduct></ShowAllProduct>}></Route>
           <Route path="cart" element={<CartPage></CartPage>}></Route>
           <Route path="order-history" element={<OrderHistory></OrderHistory>}></Route>
+          <Route path="profile" element={<Profile></Profile>}></Route>
           <Route path="product-detail/:id" element={<ShowProductDetail />} />
         </Route>
-        <Route path="profile" element={<Profile></Profile>}></Route>
+        
         <Route path="checklogin" element={<CheckLogin></CheckLogin>}></Route>
       </Routes>
     </Provider>
