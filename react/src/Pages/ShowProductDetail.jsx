@@ -3,9 +3,10 @@ import { NavLink, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { GetProductByIdActionAsync } from "../Redux/Reducers/ProductReducer";
 import { addToCart } from "../Redux/Reducers/CartReducer";
+import { message } from "antd";
 
 const ShowProductDetail = () => {
-  const [quantity, setQuantity] =useState(1)
+  const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const dispatch = useDispatch();
   const { id } = params;
@@ -24,8 +25,12 @@ const ShowProductDetail = () => {
   }, [id]);
 
   const handleAddToCart = () => {
-    const action = addToCart({ ...detailProductById,quantity: parseInt(quantity) })
-    dispatch(action)
+    const action = addToCart({
+      ...detailProductById,
+      quantity: parseInt(quantity),
+    });
+    dispatch(action);
+    message.success("Đã thêm sản phẩm vào giỏ hàng!");
   };
 
   return (
@@ -55,10 +60,14 @@ const ShowProductDetail = () => {
               type="number"
               className="form-control w-25 me-2"
               value={quantity}
-              onChange={(e)=>{setQuantity(e.target.value)}}
+              onChange={(e) => {
+                setQuantity(e.target.value);
+              }}
               min={1}
             />
-            <button className="btn btn-primary" onClick={handleAddToCart}>Add to cart</button>
+            <button className="btn btn-primary" onClick={handleAddToCart}>
+              Add to cart
+            </button>
           </div>
         </div>
       </div>

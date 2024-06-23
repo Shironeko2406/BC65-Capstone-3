@@ -7,6 +7,7 @@ import {
   removeFromCart,
 } from "../Redux/Reducers/CartReducer";
 import ModalConfirmOrder from "../Modal/ModalConfirmOrder";
+import { message } from "antd";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const CartPage = () => {
 
   const handleRemoveFromCart = (id) => {
     dispatch(removeFromCart(id));
+    message.success("Đã xóa sản phẩm");
   };
 
   const handleIncrementQuantity = (id) => {
@@ -31,6 +33,7 @@ const CartPage = () => {
 
   const handleClearCart = () => {
     dispatch(clearCart());
+    message.success("Đã xóa giỏ hàng");
   };
 
   return (
