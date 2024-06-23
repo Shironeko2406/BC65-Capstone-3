@@ -6,8 +6,6 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import { loginActionApi } from "../Redux/Reducers/UsersReducer";
 
-
-
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
@@ -91,8 +89,8 @@ const Login = () => {
 
           <Title style={styles.title}>Sign in</Title>
           <Text style={styles.text}>
-            Welcome back to AntBlocks UI! Please enter your details below to
-            sign in.
+            Welcome back to my store! Please enter your details below to sign
+            in.
           </Text>
         </div>
         <Form
