@@ -10,6 +10,7 @@ const ShowProductDetail = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const { id } = params;
+  const { userLogin } = useSelector((state) => state.UsersReducer);
   const { detailProductById } = useSelector((state) => state.ProductReducer);
   console.log(detailProductById);
 
@@ -24,7 +25,23 @@ const ShowProductDetail = () => {
     setQuantity(1);
   }, [id]);
 
+  // const handleAddToCart = () => {
+  //   const action = addToCart({
+  //     ...detailProductById,
+  //     quantity: parseInt(quantity),
+  //   });
+  //   dispatch(action);
+  //   message.success("Đã thêm sản phẩm vào giỏ hàng!");
+  // };
+
   const handleAddToCart = () => {
+    if (!userLogin) {
+      message.error(
+        "Bạn chưa đăng nhập. Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng."
+      );
+      return;
+    }
+
     const action = addToCart({
       ...detailProductById,
       quantity: parseInt(quantity),
