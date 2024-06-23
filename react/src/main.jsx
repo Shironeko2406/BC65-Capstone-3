@@ -31,8 +31,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="profile" element={<Profile></Profile>}></Route>
           <Route path="product-detail/:id" element={<ShowProductDetail />} />
         </Route>
-
-        <Route path="checklogin" element={<CheckLogin></CheckLogin>}></Route>
       </Routes>
     </Provider>
   </BrowserRouter>
