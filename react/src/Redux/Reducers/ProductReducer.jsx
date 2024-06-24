@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { HOST_DOMAIN, TOKEN_AUTHOR, getDataTextStorage } from "../../Util/UtilFunction";
 import { GetProductFavoriteActionAsync } from "./ProfileReducer";
+import { message } from "antd";
 
 const initialState = {
   productList: [],
@@ -70,9 +71,11 @@ export const LikeProductActionAsync = (id) => {
       );
       console.log(res.data.content);
       const action = GetProductFavoriteActionAsync();
+      message.success("Success!");
       dispatch(action);
     } catch (error) {
       console.error(error);
+      message.error("Failed:" + error.message);
     }
   };
 };
@@ -93,8 +96,11 @@ export const UnLikeProductActionAsync = (id) => {
       console.log(res.data.content);
       const action = GetProductFavoriteActionAsync();
       dispatch(action);
+      message.success("Success!");
     } catch (error) {
       console.error(error);
+      message.error("Failed:" + error.message);
+
     }
   };
 };

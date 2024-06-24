@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateOrderActionAsync } from "../Redux/Reducers/OderReducer";
-import { message } from "antd";
+
 
 const ModalConfirmOrder = () => {
   const { cart } = useSelector((state) => state.CartReducer);
+  const { userLogin } = useSelector((state) => state.UsersReducer);
   const dispatch = useDispatch();
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -78,7 +79,7 @@ const ModalConfirmOrder = () => {
 
   const formOrder = useFormik({
     initialValues: {
-      email: "",
+      email: userLogin.email || "",
       city: "",
       district: "",
       ward: "",
@@ -98,7 +99,6 @@ const ModalConfirmOrder = () => {
       console.log(orderData);
       const action = CreateOrderActionAsync(orderData);
       dispatch(action);
-      message.success("Đơn hàng đã được đặt!");
     },
   });
 
@@ -143,13 +143,14 @@ const ModalConfirmOrder = () => {
             <div className="modal-body">
               <form onSubmit={formOrder.handleSubmit}>
                 <div className="form-group mb-3">
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="email">Email login</label>
                   <input
                     type="text"
                     className="form-control"
                     id="email"
                     name="email"
-                    placeholder="Enter your email"
+                    readOnly
+                    value={formOrder.values.email}
                     onChange={formOrder.handleChange}
                   />
                 </div>

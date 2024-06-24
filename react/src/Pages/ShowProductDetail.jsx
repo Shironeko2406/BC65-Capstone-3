@@ -37,7 +37,7 @@ const ShowProductDetail = () => {
   const handleAddToCart = () => {
     if (!userLogin) {
       message.error(
-        "Bạn chưa đăng nhập. Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng."
+        "You are not logged in. Please log in to add products to cart."
       );
       return;
     }
@@ -47,7 +47,7 @@ const ShowProductDetail = () => {
       quantity: parseInt(quantity),
     });
     dispatch(action);
-    message.success("Đã thêm sản phẩm vào giỏ hàng!");
+    message.success("Product added to cart!");
   };
 
   return (
