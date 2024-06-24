@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  HOST_DOMAIN,
   TOKEN_AUTHOR,
   USER_LOGIN,
   getDataTextStorage,
@@ -37,7 +38,7 @@ export const GetInfoProfileActionAsync = () => {
 
     try {
       const res = await axios.post(
-        "https://apistore.cybersoft.edu.vn/api/Users/getProfile",
+        `${HOST_DOMAIN}/api/Users/getProfile`,
         null,
         {
           headers: {
@@ -55,7 +56,7 @@ export const GetInfoProfileActionAsync = () => {
           const newToken = await refreshAccessToken();
           console.log("newtoken", newToken);
           const res = await axios.post(
-            "https://apistore.cybersoft.edu.vn/api/Users/getProfile",
+            `${HOST_DOMAIN}/api/Users/getProfile`,
             null,
             {
               headers: {
@@ -85,7 +86,7 @@ export const UpdateProfileActionAsync = (updateProfileData) => {
     try {
       const token = getDataTextStorage(TOKEN_AUTHOR);
       const res = await axios.post(
-        "https://apistore.cybersoft.edu.vn/api/Users/updateProfile",
+        `${HOST_DOMAIN}/api/Users/updateProfile`,
         updateProfileData,
         {
           headers: {
@@ -108,7 +109,7 @@ export const GetProductFavoriteActionAsync = () => {
     try {
       const token = getDataTextStorage(TOKEN_AUTHOR);
       const res = await axios.get(
-        `https://apistore.cybersoft.edu.vn/api/Users/getproductfavorite`,
+        `${HOST_DOMAIN}/api/Users/getproductfavorite`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -111,9 +111,6 @@ const Profile = () => {
             alt="Profile"
             className="img-fluid rounded-circle"
           />
-          <button className="btn btn-warning mt-3" onClick={handleSignOut}>
-            Sign Out
-          </button>
         </div>
         <div className="col-md-9">
           <h2>Profile</h2>

@@ -21,7 +21,7 @@ const Login = () => {
       console.log("Received values of form: ", values);
       const loginActionThunk = loginActionApi(values.email, values.password);
       await dispatch(loginActionThunk);
-      navigate("/profile");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }

@@ -35,7 +35,7 @@ const Register = () => {
       console.log("Received values of form: ", values);
       const signupActionThunk = signupActionApi(values);
       await dispatch(signupActionThunk);
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.log(error);
     }

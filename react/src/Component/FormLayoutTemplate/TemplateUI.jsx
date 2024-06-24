@@ -10,8 +10,9 @@ import {
   Avatar,
   Dropdown,
   Space,
+  message,
 } from "antd";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import {
   ShoppingCartOutlined,
   DownOutlined,
@@ -19,16 +20,25 @@ import {
 } from "@ant-design/icons"; // Import icon giỏ hàng
 import "../../Style/TempUI.css"; // Thêm một file CSS để tùy chỉnh
 import { useSelector, useDispatch } from "react-redux"; // Import useSelector hook
-import { getDataJSONStorage } from "../../Util/UtilFunction";
-import { setCartLocalStorage } from "../../Redux/Reducers/CartReducer";
+import {
+  TOKEN_AUTHOR,
+  USER_LOGIN,
+  getDataJSONStorage,
+  removeDataTextStorage,
+} from "../../Util/UtilFunction";
+import {
+  clearCart,
+  setCartLocalStorage,
+} from "../../Redux/Reducers/CartReducer";
+import { logoutAction } from "../../Redux/Reducers/UsersReducer";
 
 const { Header, Content, Footer } = Layout;
 const { Search } = Input;
 
-const items1 = ["Home", "About", "Contact"].map((key) => ({
-  key,
-  label: `${key}`,
-}));
+const items1 = [
+  { key: "Trang chủ", label: <NavLink to="/">Home</NavLink> },
+  { key: "Liên hệ", label: <NavLink to="/">Contact</NavLink> },
+];
 
 const TemplateUI = () => {
   const { cart } = useSelector((state) => state.CartReducer);
@@ -62,16 +72,53 @@ const TemplateUI = () => {
     setFilterOrder(e.key);
   };
 
-  const handleUserClick = () => {
-    navigate("/profile");
+  const handleSignOut = () => {
+    removeDataTextStorage(TOKEN_AUTHOR);
+    removeDataTextStorage(USER_LOGIN);
+    navigate("/");
+    const action = logoutAction();
+    dispatch(action);
+    dispatch(clearCart());
+    message.success("Bạn đã đăng xuất!");
   };
 
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="up">Giá thấp tới cao</Menu.Item>
-      <Menu.Item key="down">Giá cao tới thấp</Menu.Item>
+      <Menu.Item key="up">Price low to high</Menu.Item>
+      <Menu.Item key="down">Price high to low</Menu.Item>
     </Menu>
   );
+
+  const userMenu = (
+    <Menu>
+      <Menu.Item key="profile" onClick={() => navigate("/profile")}>
+        Profile
+      </Menu.Item>
+      <Menu.Item key="logout" style={{ color: "red" }} onClick={handleSignOut}>
+        Logout
+      </Menu.Item>
+    </Menu>
+  );
+
+  // Generate breadcrumb items based on the current location
+  const pathSnippets = location.pathname.split("/").filter((i) => i);
+  const breadcrumbItems = [
+    <Breadcrumb.Item key="home">
+      <NavLink to="/">Home</NavLink>
+    </Breadcrumb.Item>,
+    ...pathSnippets.map((_, index) => {
+      const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
+      const breadcrumbName = url.substring(url.lastIndexOf("/") + 1);
+      return (
+        <Breadcrumb.Item key={url}>
+          <NavLink to={url}>
+            {breadcrumbName.charAt(0).toUpperCase() + breadcrumbName.slice(1)}
+          </NavLink>
+        </Breadcrumb.Item>
+      );
+    }),
+  ];
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Header
@@ -92,7 +139,11 @@ const TemplateUI = () => {
           }}
         >
           <div className="logo">
-            <img src="" alt="Logo" />
+            <img
+              src="https://cdn.discordapp.com/attachments/1188390482137595904/1254820800566132806/image.png?ex=667ae270&is=667990f0&hm=a05b21aa91be38d7dc8a2b19a7057b3430247886c078d2b748c32a5903ef3c80&"
+              alt="Logo"
+              style={{ borderRadius: "50%" }}
+            />
           </div>
           <Menu
             theme="dark"
@@ -105,26 +156,6 @@ const TemplateUI = () => {
               display: "flex",
             }}
           />
-          {/* <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={["Home"]} // Chỉnh sửa để mặc định chọn Home khi vào trang
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              display: "flex",
-            }}
-          >
-            <Menu.Item key="Home">
-              <NavLink to="/">Home</NavLink>
-            </Menu.Item>
-            <Menu.Item key="About">
-              <NavLink to="/about">About</NavLink>
-            </Menu.Item>
-            <Menu.Item key="Contact">
-              <NavLink to="/contact">Contact</NavLink>
-            </Menu.Item>
-          </Menu> */}
           <div className="header-right d-flex align-items-center">
             <Search
               placeholder="Search..."
@@ -134,17 +165,18 @@ const TemplateUI = () => {
             <Dropdown overlay={menu} className="me-2">
               <Button>
                 <Space>
-                  Tìm kiếm theo giá
+                  Search by price
                   <DownOutlined />
                 </Space>
               </Button>
             </Dropdown>
             {userLogin ? (
-              <Avatar
-                style={{ backgroundColor: "#003366", marginLeft: "1rem" }}
-                icon={<UserOutlined />}
-                onClick={handleUserClick}
-              />
+              <Dropdown overlay={userMenu}>
+                <Avatar
+                  style={{ backgroundColor: "#003366", marginLeft: "1rem" }}
+                  icon={<UserOutlined />}
+                />
+              </Dropdown>
             ) : (
               <Button
                 type="primary"
@@ -182,9 +214,7 @@ const TemplateUI = () => {
             margin: "16px 0",
           }}
         >
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
+          {breadcrumbItems}
         </Breadcrumb>
         <div
           style={{
@@ -209,7 +239,7 @@ const TemplateUI = () => {
           textAlign: "center",
         }}
       >
-        Ant Design ©{new Date().getFullYear()} Created by Ant UED
+        Cybersoft Store {new Date().getFullYear()}
       </Footer>
     </Layout>
   );
