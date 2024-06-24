@@ -32,7 +32,7 @@
 //   return async (dispatch) => {
 //     try {
 //       const res = await axios.post(
-//         "https://apistore.cybersoft.edu.vn/api/Users/order",
+//         "${HOST_DOMAIN}/api/Users/order",
 //         dataOrder
 //       );
 //       console.log(res.data.content);
@@ -48,7 +48,7 @@
 //   return async (dispatch) => {
 //     try {
 //       const res = await axios.get(
-//         "https://apistore.cybersoft.edu.vn/api/Order"
+//         "${HOST_DOMAIN}/api/Order"
 //       );
 //       console.log(res.data.content);
 //       const action = setOrderList(res.data.content);
@@ -61,6 +61,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { clearCart } from "./CartReducer";
+import { HOST_DOMAIN } from "../../Util/UtilFunction";
 
 const initialState = {
   OrderList: [],
@@ -97,7 +98,7 @@ export const CreateOrderActionAsync = (dataOrder) => {
   return async (dispatch) => {
     try {
       const res = await axios.post(
-        "https://apistore.cybersoft.edu.vn/api/Users/order",
+        `${HOST_DOMAIN}/api/Users/order`,
         dataOrder
       );
       console.log(res.data.content);
@@ -113,7 +114,7 @@ export const GetOrderHistoryActionAsync = () => {
   return async (dispatch) => {
     try {
       const res = await axios.get(
-        "https://apistore.cybersoft.edu.vn/api/Order"
+        `${HOST_DOMAIN}/api/Order`
       );
       console.log(res.data.content);
       const action = setOrderList(res.data.content);
@@ -128,7 +129,7 @@ export const GetOrderDetailActionAsync = (orderId) => {
   return async (dispatch) => {
     try {
       const res = await axios.get(
-        `https://apistore.cybersoft.edu.vn/api/Order/getOrderDetail?id=${orderId}`
+        `${HOST_DOMAIN}/api/Order/getOrderDetail?id=${orderId}`
       );
       const action = setOrderDetail({ orderId, orderDetail: res.data.content });
       dispatch(action);

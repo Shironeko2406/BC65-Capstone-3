@@ -1,5 +1,6 @@
 const TOKEN_AUTHOR = "accessToken";
 const USER_LOGIN = "userLogin";
+const HOST_DOMAIN = "https://apistore.cybersoft.edu.vn"
 
 //  Cookie and local storage interaction functions
 
@@ -57,7 +58,7 @@ const refreshAccessToken = async () => {
 
   try {
     const response = await axios.post(
-      "https://apistore.cybersoft.edu.vn/api/Users/RefeshToken",
+      `${HOST_DOMAIN}/api/Users/RefeshToken`,
       null,
       {
         headers: {
@@ -86,5 +87,6 @@ export {
   deleteCookie,
   TOKEN_AUTHOR,
   USER_LOGIN,
+  HOST_DOMAIN,
   refreshAccessToken,
 };

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import {
+  HOST_DOMAIN,
   TOKEN_AUTHOR,
   USER_LOGIN,
   getDataJSONStorage,
@@ -30,10 +31,13 @@ const UsersReducer = createSlice({
     signupAction: (state, action) => {
       state.userInfo = action.payload;
     },
+    logoutAction: (state) => {
+      state.userLogin = null;
+    },
   },
 });
 
-export const { loginAction, signupAction } = UsersReducer.actions;
+export const { loginAction, signupAction ,logoutAction} = UsersReducer.actions;
 
 export default UsersReducer.reducer;
 
@@ -45,7 +49,7 @@ export const loginActionApi = (email, password) => {
     console.log(email, password);
     try {
       const res = await axios.post(
-        "https://apistore.cybersoft.edu.vn/api/Users/signin",
+        `${HOST_DOMAIN}/api/Users/signin`,
         { email, password }
       );
       message.success("Đăng nhập thành công!");
@@ -66,7 +70,7 @@ export const signupActionApi = (signupInfo) => {
     try {
       console.log(signupInfo);
       const res = await axios.post(
-        "https://apistore.cybersoft.edu.vn/api/Users/signup",
+        `${HOST_DOMAIN}/api/Users/signup`,
         signupInfo
       );
       message.success("Đăng kí thành công!");
