@@ -8,7 +8,7 @@ import { loginActionApi } from "../Redux/Reducers/UsersReducer";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
-const { Text, Title, Link } = Typography;
+const { Text, Title } = Typography;
 
 const Login = () => {
   const { token } = useToken();

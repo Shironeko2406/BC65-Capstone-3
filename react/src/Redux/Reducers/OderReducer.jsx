@@ -62,6 +62,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { clearCart } from "./CartReducer";
 import { HOST_DOMAIN } from "../../Util/UtilFunction";
+import { message } from "antd";
 
 const initialState = {
   OrderList: [],
@@ -104,6 +105,7 @@ export const CreateOrderActionAsync = (dataOrder) => {
       console.log(res.data.content);
       const action = clearCart();
       dispatch(action);
+      message.success("Placed order successfully!");
     } catch (error) {
       console.error(error);
     }

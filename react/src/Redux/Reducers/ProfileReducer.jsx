@@ -6,8 +6,12 @@ import {
   getDataTextStorage,
   refreshAccessToken,
   removeDataTextStorage,
+  setDataTextStorage,
 } from "../../Util/UtilFunction";
 import { setDetailProductById } from "./ProductReducer";
+import { Modal, message } from "antd";
+import { clearCart } from "./CartReducer";
+import { logoutAction } from "./UsersReducer";
 
 const initialState = {
   profileInfo: {},
@@ -32,10 +36,9 @@ export const { setInfoProfile, setProductFavorite } = ProfileReducer.actions;
 export default ProfileReducer.reducer;
 
 //---------API Call-------------
-export const GetInfoProfileActionAsync = () => {
+export const GetInfoProfileActionAsync = (navigate) => {
   return async (dispatch) => {
     const token = getDataTextStorage(TOKEN_AUTHOR);
-
     try {
       const res = await axios.post(
         `${HOST_DOMAIN}/api/Users/getProfile`,
@@ -43,40 +46,33 @@ export const GetInfoProfileActionAsync = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            accept: "application/json",
           },
         }
       );
-
       const action = setInfoProfile(res.data.content);
       dispatch(action);
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        try {
-          const newToken = await refreshAccessToken();
-          console.log("newtoken", newToken);
-          const res = await axios.post(
-            `${HOST_DOMAIN}/api/Users/getProfile`,
-            null,
-            {
-              headers: {
-                Authorization: `Bearer ${newToken}`,
-                accept: "application/json",
-              },
-            }
-          );
+      message.error(
+        error.message + ": Login session has expired, please log in again"
+      );
 
-          const action = setInfoProfile(res.data.content);
-          dispatch(action);
-        } catch (refreshError) {
-          console.error(refreshError);
+      Modal.confirm({
+        title: "Session Expired",
+        content: "Your login session has expired. Please log in again.",
+        onOk: () => {
+          //chuyển đến trang login
+          navigate("/login");
+        },
+        onCancel: () => {
+          // Hủy bỏ hành động nếu người dùng không chọn OK
           removeDataTextStorage(TOKEN_AUTHOR);
           removeDataTextStorage(USER_LOGIN);
-          window.location.href = "/login";
-        }
-      } else {
-        console.error(error);
-      }
+          navigate("/");
+          const action = logoutAction();
+          dispatch(action);
+          dispatch(clearCart());
+        },
+      });
     }
   };
 };
@@ -97,9 +93,11 @@ export const UpdateProfileActionAsync = (updateProfileData) => {
       );
       console.log(res.data.content);
       const action = GetInfoProfileActionAsync();
+      message.success("Update success!");
       dispatch(action);
     } catch (error) {
       console.error(error);
+      message.error("Update failed:" + error.message);
     }
   };
 };

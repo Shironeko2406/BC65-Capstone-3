@@ -20,7 +20,7 @@ const CartPage = () => {
 
   const handleRemoveFromCart = (id) => {
     dispatch(removeFromCart(id));
-    message.success("Đã xóa sản phẩm");
+    message.success("Product removed");
   };
 
   const handleIncrementQuantity = (id) => {
@@ -33,7 +33,7 @@ const CartPage = () => {
 
   const handleClearCart = () => {
     dispatch(clearCart());
-    message.success("Đã xóa giỏ hàng");
+    message.success("Cart deleted");
   };
 
   return (

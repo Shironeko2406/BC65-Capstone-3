@@ -37,7 +37,7 @@ const UsersReducer = createSlice({
   },
 });
 
-export const { loginAction, signupAction ,logoutAction} = UsersReducer.actions;
+export const { loginAction, signupAction, logoutAction } = UsersReducer.actions;
 
 export default UsersReducer.reducer;
 
@@ -48,18 +48,18 @@ export const loginActionApi = (email, password) => {
   return async (dispatch) => {
     console.log(email, password);
     try {
-      const res = await axios.post(
-        `${HOST_DOMAIN}/api/Users/signin`,
-        { email, password }
-      );
-      message.success("Đăng nhập thành công!");
+      const res = await axios.post(`${HOST_DOMAIN}/api/Users/signin`, {
+        email,
+        password,
+      });
+      message.success("Logged in successfully!");
       const loginAct = loginAction(res.data.content);
       dispatch(loginAct);
       setDataJSONStorage(USER_LOGIN, res.data.content);
       setDataTextStorage(TOKEN_AUTHOR, res.data.content.accessToken);
       setCookie(TOKEN_AUTHOR, res.data.content.accessToken);
     } catch (error) {
-      message.error("Đăng nhập thất bại:" + error.message);
+      message.error("Login failed:" + error.message);
     }
   };
 };
@@ -73,12 +73,12 @@ export const signupActionApi = (signupInfo) => {
         `${HOST_DOMAIN}/api/Users/signup`,
         signupInfo
       );
-      message.success("Đăng kí thành công!");
+      message.success("Sign Up Success!");
       console.log(res);
       const signup = signupAction(res.data.content);
       dispatch(signup);
     } catch (error) {
-      message.error("Đăng kí thất bại:" + error.message);
+      message.error("Registration failed:" + error.message);
     }
   };
 };

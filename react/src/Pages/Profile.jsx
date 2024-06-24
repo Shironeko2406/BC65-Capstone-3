@@ -6,31 +6,24 @@ import {
   GetProductFavoriteActionAsync,
   UpdateProfileActionAsync,
 } from "../Redux/Reducers/ProfileReducer";
-import { HeartFilled } from "@ant-design/icons";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { UnLikeProductActionAsync } from "../Redux/Reducers/ProductReducer";
-import {
-  TOKEN_AUTHOR,
-  USER_LOGIN,
-  removeDataTextStorage,
-} from "../Util/UtilFunction";
-import { message } from "antd";
 
 const Profile = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { profileInfo, productFavorite } = useSelector(
     (state) => state.ProfileReducer
   );
   const [isEditing, setIsEditing] = useState(false);
 
   const getInfo = () => {
-    const action = GetInfoProfileActionAsync();
+    const action = GetInfoProfileActionAsync(navigate);
     dispatch(action);
   };
 
   const getProductFavorite = () => {
-    const action = GetProductFavoriteActionAsync();
+    const action = GetProductFavoriteActionAsync(navigate);
     dispatch(action);
   };
 
@@ -48,13 +41,6 @@ const Profile = () => {
     setIsEditing(false); // Ẩn form chỉnh sửa
   };
 
-  const handleSignOut = () => {
-    removeDataTextStorage(TOKEN_AUTHOR);
-    removeDataTextStorage(USER_LOGIN);
-    navigate("/login");
-    message.success("Bạn đã đăng xuất!");
-  };
-
   const formUpdate = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -66,15 +52,9 @@ const Profile = () => {
     onSubmit: (values) => {
       console.log(values);
       const action = UpdateProfileActionAsync(values);
-      dispatch(action)
-        .then(() => {
-          alert("Profile updated successfully!");
-          setIsEditing(false);
-          formUpdate.resetForm();
-        })
-        .catch(() => {
-          alert("Failed to update profile!");
-        });
+      dispatch(action);
+      setIsEditing(false);
+      formUpdate.resetForm();
     },
   });
 
