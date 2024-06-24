@@ -7,10 +7,17 @@ import {
   UpdateProfileActionAsync,
 } from "../Redux/Reducers/ProfileReducer";
 import { HeartFilled } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { UnLikeProductActionAsync } from "../Redux/Reducers/ProductReducer";
+import {
+  TOKEN_AUTHOR,
+  USER_LOGIN,
+  removeDataTextStorage,
+} from "../Util/UtilFunction";
+import { message } from "antd";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { profileInfo, productFavorite } = useSelector(
     (state) => state.ProfileReducer
@@ -41,6 +48,13 @@ const Profile = () => {
     setIsEditing(false); // Ẩn form chỉnh sửa
   };
 
+  const handleSignOut = () => {
+    removeDataTextStorage(TOKEN_AUTHOR);
+    removeDataTextStorage(USER_LOGIN);
+    navigate("/login");
+    message.success("Bạn đã đăng xuất!");
+  };
+
   const formUpdate = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -64,12 +78,12 @@ const Profile = () => {
     },
   });
 
-  const handleUnLike = (id)=>{
-    return ()=>{
-      const action = UnLikeProductActionAsync(id)
-      dispatch(action)
-    }
-  }
+  const handleUnLike = (id) => {
+    return () => {
+      const action = UnLikeProductActionAsync(id);
+      dispatch(action);
+    };
+  };
 
   //--------------Pagination--------------
   const [currentPage, setCurrentPage] = useState(1);
@@ -91,12 +105,15 @@ const Profile = () => {
   return (
     <div className="container mt-4">
       <div className="row">
-        <div className="col-md-3">
+        <div className="col-md-3 d-flex flex-column align-items-center ">
           <img
             src={profileInfo?.avatar}
             alt="Profile"
             className="img-fluid rounded-circle"
           />
+          <button className="btn btn-warning mt-3" onClick={handleSignOut}>
+            Sign Out
+          </button>
         </div>
         <div className="col-md-9">
           <h2>Profile</h2>

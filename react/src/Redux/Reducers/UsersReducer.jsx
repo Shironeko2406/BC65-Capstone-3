@@ -78,24 +78,3 @@ export const signupActionApi = (signupInfo) => {
     }
   };
 };
-
-//----------------- Cập nhập profile-------------------
-export const updateProfileActionApi = (updateData) => {
-  return async (dispatch) => {
-    try {
-      const token = getDataTextStorage(TOKEN_AUTHOR);
-      const res = await axios.post(
-        "https://apistore.cybersoft.edu.vn/api/Users/updateProfile",
-        updateData,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      message.success("Cập nhập thành công!");
-    } catch (error) {
-      message.error("Cập nhập thất bại:" + error.message);
-    }
-  };
-};

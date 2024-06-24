@@ -52,6 +52,29 @@ function deleteCookie(name) {
   document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
 
+const refreshAccessToken = async () => {
+  const currentToken = getDataTextStorage(TOKEN_AUTHOR);
+
+  try {
+    const response = await axios.post(
+      "https://apistore.cybersoft.edu.vn/api/Users/RefeshToken",
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${currentToken}`,
+        },
+      }
+    );
+
+    const newToken = response.data.content.accessToken;
+    setDataTextStorage(TOKEN_AUTHOR, newToken);
+    return newToken;
+  } catch (error) {
+    console.error("Failed to refresh token:", error);
+    throw error;
+  }
+};
+
 export {
   getDataTextStorage,
   getDataJSONStorage,
@@ -63,4 +86,5 @@ export {
   deleteCookie,
   TOKEN_AUTHOR,
   USER_LOGIN,
+  refreshAccessToken,
 };
