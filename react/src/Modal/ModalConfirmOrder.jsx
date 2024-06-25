@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateOrderActionAsync } from "../Redux/Reducers/OderReducer";
-
-
+import * as Yup from "yup";
 const ModalConfirmOrder = () => {
   const { cart } = useSelector((state) => state.CartReducer);
   const { userLogin } = useSelector((state) => state.UsersReducer);
@@ -77,15 +76,26 @@ const ModalConfirmOrder = () => {
     formOrder.handleSubmit(); // Kích hoạt submit của formik
   };
 
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    city: Yup.string().required("City is required"),
+    district: Yup.string().required("District is required"),
+    ward: Yup.string().required("Ward is required"),
+    address: Yup.string().required("Address is required"),
+  });
+
   const formOrder = useFormik({
     initialValues: {
-      email: userLogin.email || "",
+      email: userLogin?.email || "",
       city: "",
       district: "",
       ward: "",
       address: "",
     },
-    onSubmit: (values) => {
+    validationSchema,
+    onSubmit: (values, { resetForm }) => {
       const orderDetails = cart.map((item) => ({
         productId: item.id,
         quantity: item.quantity,
@@ -98,7 +108,14 @@ const ModalConfirmOrder = () => {
 
       console.log(orderData);
       const action = CreateOrderActionAsync(orderData);
-      dispatch(action);
+      dispatch(action).then(() => {
+        // Reset form values
+        resetForm();
+        // Close the modal
+        const modalElement = document.getElementById("modalOrder");
+        const modalInstance = window.bootstrap.Modal.getInstance(modalElement);
+        modalInstance.hide();
+      });
     },
   });
 
@@ -153,6 +170,9 @@ const ModalConfirmOrder = () => {
                     value={formOrder.values.email}
                     onChange={formOrder.handleChange}
                   />
+                  {formOrder.errors.email ? (
+                    <div className="text-danger">{formOrder.errors.email}</div>
+                  ) : null}
                 </div>
                 <div className="form-group mb-3">
                   <label htmlFor="city">City</label>
@@ -169,6 +189,9 @@ const ModalConfirmOrder = () => {
                       </option>
                     ))}
                   </select>
+                  {formOrder.errors.city ? (
+                    <div className="text-danger">{formOrder.errors.city}</div>
+                  ) : null}
                 </div>
                 <div className="form-group mb-3">
                   <label htmlFor="district">District</label>
@@ -186,6 +209,11 @@ const ModalConfirmOrder = () => {
                       </option>
                     ))}
                   </select>
+                  {formOrder.errors.district ? (
+                    <div className="text-danger">
+                      {formOrder.errors.district}
+                    </div>
+                  ) : null}
                 </div>
                 <div className="form-group mb-3">
                   <label htmlFor="ward">Ward</label>
@@ -203,6 +231,9 @@ const ModalConfirmOrder = () => {
                       </option>
                     ))}
                   </select>
+                  {formOrder.errors.ward ? (
+                    <div className="text-danger">{formOrder.errors.ward}</div>
+                  ) : null}
                 </div>
                 <div className="form-group mb-3">
                   <label htmlFor="address">Address</label>
@@ -214,6 +245,11 @@ const ModalConfirmOrder = () => {
                     placeholder="Enter your address"
                     onChange={formOrder.handleChange}
                   />
+                  {formOrder.errors.address ? (
+                    <div className="text-danger">
+                      {formOrder.errors.address}
+                    </div>
+                  ) : null}
                 </div>
               </form>
             </div>
