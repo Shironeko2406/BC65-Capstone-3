@@ -45,7 +45,7 @@ See our project in action! Watch our [YouTube Demo Video](https://www.youtube.co
 
 ## 📋 Task File
 
-We've meticulously organized our tasks to ensure smooth project execution. You can view the detailed task file [here](#).
+We've meticulously organized our tasks to ensure smooth project execution. You can view the detailed task file [here](template_task.xlsx).
 
 ## 👥 Project Members
 
